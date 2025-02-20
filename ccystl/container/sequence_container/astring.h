@@ -10,5 +10,5 @@ using string = basic_string<char>;
 using wstring = basic_string<wchar_t>;
 using u16string = basic_string<char16_t>;
 using u32string = basic_string<char32_t>;
-}
-#endif // !CCYSTL_ASTRING_H_
+}  // namespace ccystl
+#endif  // !CCYSTL_ASTRING_H_

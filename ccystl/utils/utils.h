@@ -11,6 +11,8 @@
  */
 
 #include <cstddef>
+#include <type_traits>
+
 #include "ccystl/internal/type_traits.h"
 
 namespace ccystl {
@@ -38,7 +40,7 @@ namespace ccystl {
  */
 template <class T>
 std::remove_reference_t<T>&& move(T&& arg) noexcept {
-    return static_cast<std::remove_reference_t<T>&&>(arg);
+  return static_cast<std::remove_reference_t<T>&&>(arg);
 }
 
 /**
@@ -64,7 +66,7 @@ std::remove_reference_t<T>&& move(T&& arg) noexcept {
  */
 template <class T>
 T&& forward(std::remove_reference_t<T>& arg) noexcept {
-    return static_cast<T&&>(arg);
+  return static_cast<T&&>(arg);
 }
 
 /**
@@ -88,8 +90,8 @@ T&& forward(std::remove_reference_t<T>& arg) noexcept {
  */
 template <class T>
 T&& forward(std::remove_reference_t<T>&& arg) noexcept {
-    static_assert(!std::is_lvalue_reference_v<T>, "bad forward");
-    return static_cast<T&&>(arg);
+  static_assert(!std::is_lvalue_reference_v<T>, "bad forward");
+  return static_cast<T&&>(arg);
 }
 
 /**
@@ -103,9 +105,9 @@ T&& forward(std::remove_reference_t<T>&& arg) noexcept {
  */
 template <class Tp>
 void swap(Tp& lhs, Tp& rhs) noexcept {
-    auto tmp = ccystl::move(lhs);
-    lhs = ccystl::move(rhs);
-    rhs = ccystl::move(tmp);
+  auto tmp = ccystl::move(lhs);
+  lhs = ccystl::move(rhs);
+  rhs = ccystl::move(tmp);
 }
 
 /**
@@ -123,10 +125,10 @@ void swap(Tp& lhs, Tp& rhs) noexcept {
 template <class ForwardIter1, class ForwardIter2>
 ForwardIter2 swap_range(ForwardIter1 first1, ForwardIter1 last1,
                         ForwardIter2 first2) {
-    for (; first1 != last1; ++first1, (void)++first2) {
-        ccystl::swap(*first1, *first2);
-    }
-    return first2;
+  for (; first1 != last1; ++first1, (void)++first2) {
+    ccystl::swap(*first1, *first2);
+  }
+  return first2;
 }
 
 /**
@@ -141,7 +143,7 @@ ForwardIter2 swap_range(ForwardIter1 first1, ForwardIter1 last1,
  */
 template <class Tp, size_t N>
 void swap(Tp (&a)[N], Tp (&b)[N]) noexcept {
-    ccystl::swap_range(a, a + N, b);
+  ccystl::swap_range(a, a + N, b);
 }
 
 /**
@@ -155,208 +157,208 @@ void swap(Tp (&a)[N], Tp (&b)[N]) noexcept {
  */
 template <class Ty1, class Ty2>
 struct pair {
-    using first_type = Ty1; ///< 第一个元素的类型
-    using second_type = Ty2; ///< 第二个元素的类型
+  using first_type = Ty1;   ///< 第一个元素的类型
+  using second_type = Ty2;  ///< 第二个元素的类型
 
-    first_type first; ///< 第一个元素
-    second_type second; ///< 第二个元素
+  first_type first;    ///< 第一个元素
+  second_type second;  ///< 第二个元素
 
-    /**
-     * @brief 默认构造一个空的 pair 对象。
-     *
-     * 需要 Ty1 和 Ty2 支持默认构造。
-     */
-    template <class Other1 = Ty1, class Other2 = Ty2,
-              std::enable_if_t<std::is_default_constructible_v<Other1> &&
-                               std::is_default_constructible_v<Other2>,
-                               void>>
-    constexpr pair() : first(), second() { }
+  /**
+   * @brief 默认构造一个空的 pair 对象。
+   *
+   * 需要 Ty1 和 Ty2 支持默认构造。
+   */
+  template <class Other1 = Ty1, class Other2 = Ty2,
+            std::enable_if_t<std::is_default_constructible_v<Other1> &&
+                                 std::is_default_constructible_v<Other2>,
+                             void>>
+  constexpr pair() : first(), second() {}
 
-    /**
-     * @brief 从两个给定的值构造一个 pair 对象。
-     *
-     * 需要 Ty1 和 Ty2 支持拷贝构造，且传入的类型必须可转换为对应的类型。
-     *
-     * @param a 第一个值。
-     * @param b 第二个值。
-     */
-    template <class U1 = Ty1, class U2 = Ty2,
-              std::enable_if_t<std::is_copy_constructible_v<U1> &&
-                               std::is_copy_constructible_v<U2> &&
-                               std::is_convertible_v<const U1&, Ty1> &&
-                               std::is_convertible_v<const U2&, Ty2>,
-                               int>  = 0>
-    constexpr pair(const Ty1& a, const Ty2& b) : first(a), second(b) { }
+  /**
+   * @brief 从两个给定的值构造一个 pair 对象。
+   *
+   * 需要 Ty1 和 Ty2 支持拷贝构造，且传入的类型必须可转换为对应的类型。
+   *
+   * @param a 第一个值。
+   * @param b 第二个值。
+   */
+  template <class U1 = Ty1, class U2 = Ty2,
+            std::enable_if_t<std::is_copy_constructible_v<U1> &&
+                                 std::is_copy_constructible_v<U2> &&
+                                 std::is_convertible_v<const U1&, Ty1> &&
+                                 std::is_convertible_v<const U2&, Ty2>,
+                             int> = 0>
+  constexpr pair(const Ty1& a, const Ty2& b) : first(a), second(b) {}
 
-    // 显式构造函数
-    /**
-     * @brief 显式从两个给定的值构造一个 pair 对象。
-     *
-     * 需要 Ty1 和 Ty2 支持拷贝构造，但禁止隐式类型转换。
-     *
-     * @param a 第一个值。
-     * @param b 第二个值。
-     */
-    template <class U1 = Ty1, class U2 = Ty2,
-              std::enable_if_t<std::is_copy_constructible_v<U1> &&
-                               std::is_copy_constructible_v<U2> &&
-                               (!std::is_convertible_v<const U1&, Ty1> ||
-                                   !std::is_convertible_v<const U2&, Ty2>),
-                               int>  = 0>
-    explicit constexpr pair(const Ty1& a, const Ty2& b) : first(a), second(b) { }
+  // 显式构造函数
+  /**
+   * @brief 显式从两个给定的值构造一个 pair 对象。
+   *
+   * 需要 Ty1 和 Ty2 支持拷贝构造，但禁止隐式类型转换。
+   *
+   * @param a 第一个值。
+   * @param b 第二个值。
+   */
+  template <class U1 = Ty1, class U2 = Ty2,
+            std::enable_if_t<std::is_copy_constructible_v<U1> &&
+                                 std::is_copy_constructible_v<U2> &&
+                                 (!std::is_convertible_v<const U1&, Ty1> ||
+                                  !std::is_convertible_v<const U2&, Ty2>),
+                             int> = 0>
+  explicit constexpr pair(const Ty1& a, const Ty2& b) : first(a), second(b) {}
 
-    pair(const pair& rhs) = default; ///< 默认拷贝构造
-    pair(pair&& rhs) = default; ///< 默认移动构造
+  pair(const pair& rhs) = default;  ///< 默认拷贝构造
+  pair(pair&& rhs) = default;       ///< 默认移动构造
 
-    // 隐式移动构造函数
-    /**
-     * @brief 从两个给定的右值构造一个 pair 对象。
-     *
-     * 需要 Ty1 和 Ty2 支持移动构造，且传入的类型必须可转换为对应的类型。
-     *
-     * @param a 第一个右值。
-     * @param b 第二个右值。
-     */
-    template <class Other1, class Other2,
-              std::enable_if_t<std::is_constructible_v<Ty1, Other1> &&
-                               std::is_constructible_v<Ty2, Other2> &&
-                               std::is_convertible_v<Other1&&, Ty1> &&
-                               std::is_convertible_v<Other2&&, Ty2>,
-                               int>  = 0>
-    constexpr pair(Other1&& a, Other2&& b)
-        : first(ccystl::forward<Other1>(a)), second(ccystl::forward<Other2>(b)) { }
+  // 隐式移动构造函数
+  /**
+   * @brief 从两个给定的右值构造一个 pair 对象。
+   *
+   * 需要 Ty1 和 Ty2 支持移动构造，且传入的类型必须可转换为对应的类型。
+   *
+   * @param a 第一个右值。
+   * @param b 第二个右值。
+   */
+  template <class Other1, class Other2,
+            std::enable_if_t<std::is_constructible_v<Ty1, Other1> &&
+                                 std::is_constructible_v<Ty2, Other2> &&
+                                 std::is_convertible_v<Other1&&, Ty1> &&
+                                 std::is_convertible_v<Other2&&, Ty2>,
+                             int> = 0>
+  constexpr pair(Other1&& a, Other2&& b)
+      : first(ccystl::forward<Other1>(a)), second(ccystl::forward<Other2>(b)) {}
 
-    // 显式移动构造函数
-    /**
-     * @brief 显式从两个给定的右值构造一个 pair 对象。
-     *
-     * 需要 Ty1 和 Ty2 支持移动构造，但禁止隐式类型转换。
-     *
-     * @param a 第一个右值。
-     * @param b 第二个右值。
-     */
-    template <class Other1, class Other2,
-              std::enable_if_t<std::is_constructible_v<Ty1, Other1> &&
-                               std::is_constructible_v<Ty2, Other2> &&
-                               (!std::is_convertible_v<Other1, Ty1> ||
-                                   !std::is_convertible_v<Other2, Ty2>),
-                               int>  = 0>
-    explicit constexpr pair(Other1&& a, Other2&& b)
-        : first(ccystl::forward<Other1>(a)), second(ccystl::forward<Other2>(b)) { }
+  // 显式移动构造函数
+  /**
+   * @brief 显式从两个给定的右值构造一个 pair 对象。
+   *
+   * 需要 Ty1 和 Ty2 支持移动构造，但禁止隐式类型转换。
+   *
+   * @param a 第一个右值。
+   * @param b 第二个右值。
+   */
+  template <class Other1, class Other2,
+            std::enable_if_t<std::is_constructible_v<Ty1, Other1> &&
+                                 std::is_constructible_v<Ty2, Other2> &&
+                                 (!std::is_convertible_v<Other1, Ty1> ||
+                                  !std::is_convertible_v<Other2, Ty2>),
+                             int> = 0>
+  explicit constexpr pair(Other1&& a, Other2&& b)
+      : first(ccystl::forward<Other1>(a)), second(ccystl::forward<Other2>(b)) {}
 
-    // 隐式拷贝构造函数
-    /**
-     * @brief 从另一个 pair 对象拷贝构造。
-     *
-     * 需要 Ty1 和 Ty2
-     * 支持对应类型的拷贝构造，且传入的类型必须可转换为对应的类型。
-     *
-     * @param other 另一个 pair 对象。
-     */
-    template <class Other1, class Other2,
-              std::enable_if_t<std::is_constructible_v<Ty1, const Other1&> &&
-                               std::is_constructible_v<Ty2, const Other2&> &&
-                               std::is_convertible_v<const Other1&, Ty1> &&
-                               std::is_convertible_v<const Other2&, Ty2>,
-                               int>  = 0>
-    constexpr explicit pair(const pair<Other1, Other2>& other)
-        : first(other.first), second(other.second) { }
+  // 隐式拷贝构造函数
+  /**
+   * @brief 从另一个 pair 对象拷贝构造。
+   *
+   * 需要 Ty1 和 Ty2
+   * 支持对应类型的拷贝构造，且传入的类型必须可转换为对应的类型。
+   *
+   * @param other 另一个 pair 对象。
+   */
+  template <class Other1, class Other2,
+            std::enable_if_t<std::is_constructible_v<Ty1, const Other1&> &&
+                                 std::is_constructible_v<Ty2, const Other2&> &&
+                                 std::is_convertible_v<const Other1&, Ty1> &&
+                                 std::is_convertible_v<const Other2&, Ty2>,
+                             int> = 0>
+  constexpr explicit pair(const pair<Other1, Other2>& other)
+      : first(other.first), second(other.second) {}
 
-    // 显式拷贝构造函数
-    /**
-     * @brief 显式从另一个 pair 对象拷贝构造。
-     *
-     * 需要 Ty1 和 Ty2 支持对应类型的拷贝构造，但禁止隐式类型转换。
-     *
-     * @param other 另一个 pair 对象。
-     */
-    template <class Other1, class Other2,
-              std::enable_if_t<std::is_constructible_v<Ty1, const Other1&> &&
-                               std::is_constructible_v<Ty2, const Other2&> &&
-                               (!std::is_convertible_v<const Other1&, Ty1> ||
-                                   !std::is_convertible_v<const Other2&, Ty2>),
-                               int>  = 0>
-    explicit constexpr pair(const pair<Other1, Other2>& other)
-        : first(other.first), second(other.second) { }
+  // 显式拷贝构造函数
+  /**
+   * @brief 显式从另一个 pair 对象拷贝构造。
+   *
+   * 需要 Ty1 和 Ty2 支持对应类型的拷贝构造，但禁止隐式类型转换。
+   *
+   * @param other 另一个 pair 对象。
+   */
+  template <class Other1, class Other2,
+            std::enable_if_t<std::is_constructible_v<Ty1, const Other1&> &&
+                                 std::is_constructible_v<Ty2, const Other2&> &&
+                                 (!std::is_convertible_v<const Other1&, Ty1> ||
+                                  !std::is_convertible_v<const Other2&, Ty2>),
+                             int> = 0>
+  explicit constexpr pair(const pair<Other1, Other2>& other)
+      : first(other.first), second(other.second) {}
 
-    // 隐式移动构造函数
-    /**
-     * @brief 从另一个右值 pair 对象移动构造。
-     *
-     * 需要 Ty1 和 Ty2
-     * 支持对应类型的移动构造，且传入的类型必须可转换为对应的类型。
-     *
-     * @param other 另一个右值 pair 对象。
-     */
-    template <class Other1, class Other2,
-              std::enable_if_t<std::is_constructible_v<Ty1, Other1> &&
-                               std::is_constructible_v<Ty2, Other2> &&
-                               std::is_convertible_v<Other1, Ty1> &&
-                               std::is_convertible_v<Other2, Ty2>,
-                               int>  = 0>
-    constexpr explicit pair(pair<Other1, Other2>&& other)
-        : first(ccystl::forward<Other1>(other.first)),
-          second(ccystl::forward<Other2>(other.second)) { }
+  // 隐式移动构造函数
+  /**
+   * @brief 从另一个右值 pair 对象移动构造。
+   *
+   * 需要 Ty1 和 Ty2
+   * 支持对应类型的移动构造，且传入的类型必须可转换为对应的类型。
+   *
+   * @param other 另一个右值 pair 对象。
+   */
+  template <class Other1, class Other2,
+            std::enable_if_t<std::is_constructible_v<Ty1, Other1> &&
+                                 std::is_constructible_v<Ty2, Other2> &&
+                                 std::is_convertible_v<Other1, Ty1> &&
+                                 std::is_convertible_v<Other2, Ty2>,
+                             int> = 0>
+  constexpr explicit pair(pair<Other1, Other2>&& other)
+      : first(ccystl::forward<Other1>(other.first)),
+        second(ccystl::forward<Other2>(other.second)) {}
 
-    // 显式移动构造函数
-    /**
-     * @brief 显式从另一个右值 pair 对象移动构造。
-     *
-     * 需要 Ty1 和 Ty2 支持对应类型的移动构造，但禁止隐式类型转换。
-     *
-     * @param other 另一个右值 pair 对象。
-     */
-    template <class Other1, class Other2,
-              std::enable_if_t<std::is_constructible_v<Ty1, Other1> &&
-                               std::is_constructible_v<Ty2, Other2> &&
-                               (!std::is_convertible_v<Other1, Ty1> ||
-                                   !std::is_convertible_v<Other2, Ty2>),
-                               int>  = 0>
-    explicit constexpr pair(pair<Other1, Other2>&& other)
-        : first(ccystl::forward<Other1>(other.first)),
-          second(ccystl::forward<Other2>(other.second)) { }
+  // 显式移动构造函数
+  /**
+   * @brief 显式从另一个右值 pair 对象移动构造。
+   *
+   * 需要 Ty1 和 Ty2 支持对应类型的移动构造，但禁止隐式类型转换。
+   *
+   * @param other 另一个右值 pair 对象。
+   */
+  template <class Other1, class Other2,
+            std::enable_if_t<std::is_constructible_v<Ty1, Other1> &&
+                                 std::is_constructible_v<Ty2, Other2> &&
+                                 (!std::is_convertible_v<Other1, Ty1> ||
+                                  !std::is_convertible_v<Other2, Ty2>),
+                             int> = 0>
+  explicit constexpr pair(pair<Other1, Other2>&& other)
+      : first(ccystl::forward<Other1>(other.first)),
+        second(ccystl::forward<Other2>(other.second)) {}
 
-    /**
-     * @brief 拷贝赋值操作符。
-     *
-     * @param rhs 另一个 pair 对象。
-     * @return pair& 返回赋值后的对象。
-     */
-    pair& operator=(const pair& rhs) {
-        if (this != &rhs) {
-            first = rhs.first;
-            second = rhs.second;
-        }
-        return *this;
+  /**
+   * @brief 拷贝赋值操作符。
+   *
+   * @param rhs 另一个 pair 对象。
+   * @return pair& 返回赋值后的对象。
+   */
+  pair& operator=(const pair& rhs) {
+    if (this != &rhs) {
+      first = rhs.first;
+      second = rhs.second;
     }
+    return *this;
+  }
 
-    /**
-     * @brief 移动赋值操作符。
-     *
-     * @param rhs 另一个右值 pair 对象。
-     * @return pair& 返回赋值后的对象。
-     */
-    pair& operator=(pair&& rhs) noexcept {
-        if (this != &rhs) {
-            first = ccystl::move(rhs.first);
-            second = ccystl::move(rhs.second);
-        }
-        return *this;
+  /**
+   * @brief 移动赋值操作符。
+   *
+   * @param rhs 另一个右值 pair 对象。
+   * @return pair& 返回赋值后的对象。
+   */
+  pair& operator=(pair&& rhs) noexcept {
+    if (this != &rhs) {
+      first = ccystl::move(rhs.first);
+      second = ccystl::move(rhs.second);
     }
+    return *this;
+  }
 
-    ~pair() = default; ///< 默认析构函数
+  ~pair() = default;  ///< 默认析构函数
 
-    /**
-     * @brief 交换两个 pair 对象的内容。
-     *
-     * @param other 另一个 pair 对象。
-     */
-    void swap(pair& other) noexcept {
-        if (this != other) {
-            ccystl::swap(first, other.first);
-            ccystl::swap(second, other.second);
-        }
+  /**
+   * @brief 交换两个 pair 对象的内容。
+   *
+   * @param other 另一个 pair 对象。
+   */
+  void swap(pair& other) noexcept {
+    if (this != other) {
+      ccystl::swap(first, other.first);
+      ccystl::swap(second, other.second);
     }
+  }
 };
 
 /**
@@ -370,7 +372,7 @@ struct pair {
  */
 template <class Ty1, class Ty2>
 bool operator==(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
-    return lhs.first == rhs.first && lhs.second == rhs.second;
+  return lhs.first == rhs.first && lhs.second == rhs.second;
 }
 
 /**
@@ -386,8 +388,8 @@ bool operator==(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
  */
 template <class Ty1, class Ty2>
 bool operator<(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
-    return lhs.first < rhs.first ||
-        (lhs.first == rhs.first && lhs.second < rhs.second);
+  return lhs.first < rhs.first ||
+         (lhs.first == rhs.first && lhs.second < rhs.second);
 }
 
 /**
@@ -401,7 +403,7 @@ bool operator<(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
  */
 template <class Ty1, class Ty2>
 bool operator!=(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
-    return !(lhs == rhs);
+  return !(lhs == rhs);
 }
 
 /**
@@ -415,7 +417,7 @@ bool operator!=(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
  */
 template <class Ty1, class Ty2>
 bool operator>(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
-    return rhs < lhs;
+  return rhs < lhs;
 }
 
 /**
@@ -429,7 +431,7 @@ bool operator>(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
  */
 template <class Ty1, class Ty2>
 bool operator<=(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
-    return !(rhs < lhs);
+  return !(rhs < lhs);
 }
 
 /**
@@ -443,7 +445,7 @@ bool operator<=(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
  */
 template <class Ty1, class Ty2>
 bool operator>=(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
-    return !(lhs < rhs);
+  return !(lhs < rhs);
 }
 
 /**
@@ -456,7 +458,7 @@ bool operator>=(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs) {
  */
 template <class Ty1, class Ty2>
 void swap(pair<Ty1, Ty2>& lhs, pair<Ty1, Ty2>& rhs) noexcept {
-    lhs.swap(rhs);
+  lhs.swap(rhs);
 }
 
 /**
@@ -470,8 +472,9 @@ void swap(pair<Ty1, Ty2>& lhs, pair<Ty1, Ty2>& rhs) noexcept {
  */
 template <class Ty1, class Ty2>
 pair<Ty1, Ty2> make_pair(Ty1&& first, Ty2&& second) {
-    return pair<Ty1, Ty2>(ccystl::forward<Ty1>(first), ccystl::forward<Ty2>(second));
+  return pair<Ty1, Ty2>(ccystl::forward<Ty1>(first),
+                        ccystl::forward<Ty2>(second));
 }
-} // namespace ccystl
+}  // namespace ccystl
 
-#endif // !CCYSTL_UTILS_H_
+#endif  // !CCYSTL_UTILS_H_

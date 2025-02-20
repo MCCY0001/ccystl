@@ -31,10 +31,11 @@
 *.out
 *.app
 
-# Unrelated Folders
+# Cache
 .cache
-.idea
+
+# Build Related
+.vscode
 3rdparty
 build
 deploy
-

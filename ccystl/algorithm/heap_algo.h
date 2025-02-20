@@ -29,14 +29,14 @@ namespace ccystl {
 template <class RandomIter, class Distance, class T>
 void push_heap_aux(RandomIter first, Distance holeIndex, Distance topIndex,
                    T value) {
-    auto parent = (holeIndex - 1) / 2; // 计算父节点索引
-    while (holeIndex > topIndex && *(first + parent) < value) {
-        // 上溯调整
-        *(first + holeIndex) = *(first + parent);
-        holeIndex = parent;
-        parent = (holeIndex - 1) / 2;
-    }
-    *(first + holeIndex) = value; // 插入新值
+  auto parent = (holeIndex - 1) / 2;  // 计算父节点索引
+  while (holeIndex > topIndex && *(first + parent) < value) {
+    // 上溯调整
+    *(first + holeIndex) = *(first + parent);
+    holeIndex = parent;
+    parent = (holeIndex - 1) / 2;
+  }
+  *(first + holeIndex) = value;  // 插入新值
 }
 
 /**
@@ -50,8 +50,8 @@ void push_heap_aux(RandomIter first, Distance holeIndex, Distance topIndex,
  */
 template <class RandomIter, class Distance>
 void push_heap_d(RandomIter first, RandomIter last, Distance*) {
-    ccystl::push_heap_aux(first, (last - first) - 1, static_cast<Distance>(0),
-                          *(last - 1));
+  ccystl::push_heap_aux(first, (last - first) - 1, static_cast<Distance>(0),
+                        *(last - 1));
 }
 
 /**
@@ -65,7 +65,7 @@ void push_heap_d(RandomIter first, RandomIter last, Distance*) {
  */
 template <class RandomIter>
 void push_heap(RandomIter first, RandomIter last) {
-    ccystl::push_heap_d(first, last, distance_type(first));
+  ccystl::push_heap_d(first, last, distance_type(first));
 }
 
 /**
@@ -86,15 +86,14 @@ void push_heap(RandomIter first, RandomIter last) {
 template <class RandomIter, class Distance, class T, class Compared>
 void push_heap_aux(RandomIter first, Distance holeIndex, Distance topIndex,
                    T value, Compared comp) {
-    auto parent = (holeIndex - 1) / 2; // 计算父节点索引
-    while (holeIndex > topIndex &&
-        comp(*(first + parent), value)) {
-        // 使用自定义比较函数调整
-        *(first + holeIndex) = *(first + parent);
-        holeIndex = parent;
-        parent = (holeIndex - 1) / 2;
-    }
-    *(first + holeIndex) = value; // 插入新值
+  auto parent = (holeIndex - 1) / 2;  // 计算父节点索引
+  while (holeIndex > topIndex && comp(*(first + parent), value)) {
+    // 使用自定义比较函数调整
+    *(first + holeIndex) = *(first + parent);
+    holeIndex = parent;
+    parent = (holeIndex - 1) / 2;
+  }
+  *(first + holeIndex) = value;  // 插入新值
 }
 
 /**
@@ -110,8 +109,8 @@ void push_heap_aux(RandomIter first, Distance holeIndex, Distance topIndex,
  */
 template <class RandomIter, class Compared, class Distance>
 void push_heap_d(RandomIter first, RandomIter last, Distance*, Compared comp) {
-    ccystl::push_heap_aux(first, (last - first) - 1, static_cast<Distance>(0),
-                          *(last - 1), comp);
+  ccystl::push_heap_aux(first, (last - first) - 1, static_cast<Distance>(0),
+                        *(last - 1), comp);
 }
 
 /**
@@ -127,7 +126,7 @@ void push_heap_d(RandomIter first, RandomIter last, Distance*, Compared comp) {
  */
 template <class RandomIter, class Compared>
 void push_heap(RandomIter first, RandomIter last, Compared comp) {
-    ccystl::push_heap_d(first, last, distance_type(first), comp);
+  ccystl::push_heap_d(first, last, distance_type(first), comp);
 }
 
 /**
@@ -145,22 +144,21 @@ void push_heap(RandomIter first, RandomIter last, Compared comp) {
  */
 template <class RandomIter, class T, class Distance>
 void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value) {
-    auto topIndex = holeIndex;
-    auto rchild = 2 * holeIndex + 2; // 计算右子节点索引
-    while (rchild < len) {
-        // 下溯调整
-        if (*(first + rchild) < *(first + rchild - 1))
-            --rchild;
-        *(first + holeIndex) = *(first + rchild);
-        holeIndex = rchild;
-        rchild = 2 * (rchild + 1);
-    }
-    if (rchild == len) {
-        // 如果没有右子节点
-        *(first + holeIndex) = *(first + (rchild - 1));
-        holeIndex = rchild - 1;
-    }
-    ccystl::push_heap_aux(first, holeIndex, topIndex, value); // 上溯调整
+  auto topIndex = holeIndex;
+  auto rchild = 2 * holeIndex + 2;  // 计算右子节点索引
+  while (rchild < len) {
+    // 下溯调整
+    if (*(first + rchild) < *(first + rchild - 1)) --rchild;
+    *(first + holeIndex) = *(first + rchild);
+    holeIndex = rchild;
+    rchild = 2 * (rchild + 1);
+  }
+  if (rchild == len) {
+    // 如果没有右子节点
+    *(first + holeIndex) = *(first + (rchild - 1));
+    holeIndex = rchild - 1;
+  }
+  ccystl::push_heap_aux(first, holeIndex, topIndex, value);  // 上溯调整
 }
 
 /**
@@ -178,9 +176,9 @@ void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value) {
 template <class RandomIter, class T, class Distance>
 void pop_heap_aux(RandomIter first, RandomIter last, RandomIter result, T value,
                   Distance*) {
-    *result = *first; // 先将首值调至尾节点
-    ccystl::adjust_heap(first, static_cast<Distance>(0), last - first,
-                        value); // 调整堆
+  *result = *first;  // 先将首值调至尾节点
+  ccystl::adjust_heap(first, static_cast<Distance>(0), last - first,
+                      value);  // 调整堆
 }
 
 /**
@@ -192,8 +190,8 @@ void pop_heap_aux(RandomIter first, RandomIter last, RandomIter result, T value,
  */
 template <class RandomIter>
 void pop_heap(RandomIter first, RandomIter last) {
-    ccystl::pop_heap_aux(first, last - 1, last - 1, *(last - 1),
-                         distance_type(first));
+  ccystl::pop_heap_aux(first, last - 1, last - 1, *(last - 1),
+                       distance_type(first));
 }
 
 /**
@@ -214,21 +212,20 @@ void pop_heap(RandomIter first, RandomIter last) {
 template <class RandomIter, class T, class Distance, class Compared>
 void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value,
                  Compared comp) {
-    auto topIndex = holeIndex;
-    auto rchild = 2 * holeIndex + 2;
-    while (rchild < len) {
-        // 下溯调整
-        if (comp(*(first + rchild), *(first + rchild - 1)))
-            --rchild;
-        *(first + holeIndex) = *(first + rchild);
-        holeIndex = rchild;
-        rchild = 2 * (rchild + 1);
-    }
-    if (rchild == len) {
-        *(first + holeIndex) = *(first + (rchild - 1));
-        holeIndex = rchild - 1;
-    }
-    ccystl::push_heap_aux(first, holeIndex, topIndex, value, comp); // 上溯调整
+  auto topIndex = holeIndex;
+  auto rchild = 2 * holeIndex + 2;
+  while (rchild < len) {
+    // 下溯调整
+    if (comp(*(first + rchild), *(first + rchild - 1))) --rchild;
+    *(first + holeIndex) = *(first + rchild);
+    holeIndex = rchild;
+    rchild = 2 * (rchild + 1);
+  }
+  if (rchild == len) {
+    *(first + holeIndex) = *(first + (rchild - 1));
+    holeIndex = rchild - 1;
+  }
+  ccystl::push_heap_aux(first, holeIndex, topIndex, value, comp);  // 上溯调整
 }
 
 /**
@@ -248,9 +245,9 @@ void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value,
 template <class RandomIter, class T, class Distance, class Compared>
 void pop_heap_aux(RandomIter first, RandomIter last, RandomIter result, T value,
                   Distance*, Compared comp) {
-    *result = *first; // 先将首值调至尾节点
-    ccystl::adjust_heap(first, static_cast<Distance>(0), last - first, value,
-                        comp); // 调整堆
+  *result = *first;  // 先将首值调至尾节点
+  ccystl::adjust_heap(first, static_cast<Distance>(0), last - first, value,
+                      comp);  // 调整堆
 }
 
 /**
@@ -264,8 +261,8 @@ void pop_heap_aux(RandomIter first, RandomIter last, RandomIter result, T value,
  */
 template <class RandomIter, class Compared>
 void pop_heap(RandomIter first, RandomIter last, Compared comp) {
-    ccystl::pop_heap_aux(first, last - 1, last - 1, *(last - 1),
-                         distance_type(first), comp);
+  ccystl::pop_heap_aux(first, last - 1, last - 1, *(last - 1),
+                       distance_type(first), comp);
 }
 
 /**
@@ -280,9 +277,9 @@ void pop_heap(RandomIter first, RandomIter last, Compared comp) {
  */
 template <class RandomIter>
 void sort_heap(RandomIter first, RandomIter last) {
-    while (last - first > 1) {
-        ccystl::pop_heap(first, last--); // 每次 pop_heap 将最大元素移动到末尾
-    }
+  while (last - first > 1) {
+    ccystl::pop_heap(first, last--);  // 每次 pop_heap 将最大元素移动到末尾
+  }
 }
 
 /**
@@ -296,9 +293,9 @@ void sort_heap(RandomIter first, RandomIter last) {
  */
 template <class RandomIter, class Compared>
 void sort_heap(RandomIter first, RandomIter last, Compared comp) {
-    while (last - first > 1) {
-        ccystl::pop_heap(first, last--, comp); // 使用自定义比较函数进行排序
-    }
+  while (last - first > 1) {
+    ccystl::pop_heap(first, last--, comp);  // 使用自定义比较函数进行排序
+  }
 }
 
 /**
@@ -314,16 +311,14 @@ void sort_heap(RandomIter first, RandomIter last, Compared comp) {
  */
 template <class RandomIter, class Distance>
 void make_heap_aux(RandomIter first, RandomIter last, Distance*) {
-    if (last - first < 2)
-        return;
-    auto len = last - first;
-    auto holeIndex = (len - 2) / 2;
-    while (true) {
-        ccystl::adjust_heap(first, holeIndex, len, *(first + holeIndex)); // 调整堆
-        if (holeIndex == 0)
-            return;
-        --holeIndex;
-    }
+  if (last - first < 2) return;
+  auto len = last - first;
+  auto holeIndex = (len - 2) / 2;
+  while (true) {
+    ccystl::adjust_heap(first, holeIndex, len, *(first + holeIndex));  // 调整堆
+    if (holeIndex == 0) return;
+    --holeIndex;
+  }
 }
 
 /**
@@ -335,7 +330,7 @@ void make_heap_aux(RandomIter first, RandomIter last, Distance*) {
  */
 template <class RandomIter>
 void make_heap(RandomIter first, RandomIter last) {
-    ccystl::make_heap_aux(first, last, distance_type(first));
+  ccystl::make_heap_aux(first, last, distance_type(first));
 }
 
 /**
@@ -352,15 +347,17 @@ void make_heap(RandomIter first, RandomIter last) {
  * @param comp 自定义比较函数对象。
  */
 template <class RandomIter, class Distance, class Compared>
-void make_heap_aux(RandomIter first, RandomIter last, Distance*, Compared comp) {
-    if (last - first < 2) return;
-    auto len = last - first;
-    auto holeIndex = (len - 2) / 2;
-    while (true) {
-        ccystl::adjust_heap(first, holeIndex, len, *(first + holeIndex), comp); // 调整堆
-        if (holeIndex == 0) return;
-        --holeIndex;
-    }
+void make_heap_aux(RandomIter first, RandomIter last, Distance*,
+                   Compared comp) {
+  if (last - first < 2) return;
+  auto len = last - first;
+  auto holeIndex = (len - 2) / 2;
+  while (true) {
+    ccystl::adjust_heap(first, holeIndex, len, *(first + holeIndex),
+                        comp);  // 调整堆
+    if (holeIndex == 0) return;
+    --holeIndex;
+  }
 }
 
 /**
@@ -374,8 +371,8 @@ void make_heap_aux(RandomIter first, RandomIter last, Distance*, Compared comp) 
  */
 template <class RandomIter, class Compared>
 void make_heap(RandomIter first, RandomIter last, Compared comp) {
-    ccystl::make_heap_aux(first, last, distance_type(first), comp);
+  ccystl::make_heap_aux(first, last, distance_type(first), comp);
 }
-} // namespace ccystl
+}  // namespace ccystl
 
-#endif // CCYSTL_HEAP_ALGO_H_
+#endif  // CCYSTL_HEAP_ALGO_H_

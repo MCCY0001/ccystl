@@ -1,5 +1,5 @@
-#ifndef CCYSTL_CONSTRUCT_H_
-#define CCYSTL_CONSTRUCT_H_
+#ifndef _CCYSTL_CONSTRUCT_H_
+#define _CCYSTL_CONSTRUCT_H_
 
 /**
  * @file construct.h
@@ -9,14 +9,8 @@
  * 提供了使用 placement new 进行对象构造的模板函数，以及用于安全析构对象的函数。
  */
 
-#include "ccystl/internal/type_traits.h"
 #include "ccystl/iterator/iterator.h"
-#include <new>
-
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4100) // unused parameter
-#endif                          // _MSC_VER
+#include "ccystl/utils/utils.h"
 
 namespace ccystl {
 /**
@@ -29,7 +23,7 @@ namespace ccystl {
  */
 template <class Ty>
 void construct(Ty* ptr) {
-    ::new(static_cast<void*>(ptr)) Ty();
+  ::new (static_cast<void*>(ptr)) Ty();
 }
 
 /**
@@ -44,7 +38,7 @@ void construct(Ty* ptr) {
  */
 template <class Ty1, class Ty2>
 void construct(Ty1* ptr, const Ty2& value) {
-    ::new(static_cast<void*>(ptr)) Ty1(value);
+  ::new (static_cast<void*>(ptr)) Ty1(value);
 }
 
 /**
@@ -59,7 +53,7 @@ void construct(Ty1* ptr, const Ty2& value) {
  */
 template <class Ty, class... Args>
 void construct(Ty* ptr, Args&&... args) {
-    ::new(static_cast<void*>(ptr)) Ty(ccystl::forward<Args>(args)...);
+  ::new (static_cast<void*>(ptr)) Ty(ccystl::forward<Args>(args)...);
 }
 
 /**
@@ -71,7 +65,7 @@ void construct(Ty* ptr, Args&&... args) {
  * @param ptr 指向要销毁的对象的指针。
  */
 template <class Ty>
-void destroy_one(Ty* ptr, std::true_type) { }
+void destroy_one(Ty* ptr, std::true_type) {}
 
 /**
  * @brief 销毁对象，调用其析构函数。
@@ -83,9 +77,9 @@ void destroy_one(Ty* ptr, std::true_type) { }
  */
 template <class Ty>
 void destroy_one(Ty* ptr, std::false_type) {
-    if (ptr != nullptr) {
-        ptr->~Ty();
-    }
+  if (ptr != nullptr) {
+    ptr->~Ty();
+  }
 }
 
 /**
@@ -99,7 +93,7 @@ void destroy_one(Ty* ptr, std::false_type) {
  * @param last 指向要销毁的最后一个对象之后的迭代器。
  */
 template <class ForwardIter>
-void destroy_cat(ForwardIter first, ForwardIter last, std::true_type) { }
+void destroy_cat(ForwardIter first, ForwardIter last, std::true_type) {}
 
 /**
  * @brief 对范围内的对象调用析构函数。
@@ -110,9 +104,9 @@ void destroy_cat(ForwardIter first, ForwardIter last, std::true_type) { }
  */
 template <class ForwardIter>
 void destroy_cat(ForwardIter first, ForwardIter last, std::false_type) {
-    for (; first != last; ++first) {
-        destroy(&*first);
-    }
+  for (; first != last; ++first) {
+    destroy(&*first);
+  }
 }
 
 /**
@@ -125,7 +119,7 @@ void destroy_cat(ForwardIter first, ForwardIter last, std::false_type) {
  */
 template <class Ty>
 void destroy(Ty* ptr) {
-    destroy_one(ptr, std::is_trivially_destructible<Ty>{});
+  destroy_one(ptr, std::is_trivially_destructible<Ty>{});
 }
 
 /**
@@ -139,13 +133,10 @@ void destroy(Ty* ptr) {
  */
 template <class ForwardIter>
 void destroy(ForwardIter first, ForwardIter last) {
-    destroy_cat(first, last, std::is_trivially_destructible<
-                    typename iterator_traits<ForwardIter>::value_type>{});
+  destroy_cat(first, last,
+              std::is_trivially_destructible<
+                  typename iterator_traits<ForwardIter>::value_type>{});
 }
-} // namespace ccystl
+}  // namespace ccystl
 
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // _MSC_VER
-
-#endif // CCYSTL_CONSTRUCT_H_
+#endif  // _CCYSTL_CONSTRUCT_H_

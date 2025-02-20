@@ -19,8 +19,8 @@ namespace ccystl {
  */
 template <typename Arg, typename Result>
 struct unarg_function {
-    typedef Arg argument_type; ///< 参数类型
-    typedef Result result_type; ///< 返回值类型
+  typedef Arg argument_type;   ///< 参数类型
+  typedef Result result_type;  ///< 返回值类型
 };
 
 /**
@@ -32,9 +32,9 @@ struct unarg_function {
  */
 template <typename Arg1, typename Arg2, typename Result>
 struct binary_function {
-    typedef Arg1 first_argument_type; ///< 第一个参数类型
-    typedef Arg2 second_argument_type; ///< 第二个参数类型
-    typedef Result result_type; ///< 返回值类型
+  typedef Arg1 first_argument_type;   ///< 第一个参数类型
+  typedef Arg2 second_argument_type;  ///< 第二个参数类型
+  typedef Result result_type;         ///< 返回值类型
 };
 
 /**
@@ -46,9 +46,7 @@ struct binary_function {
  */
 template <typename T>
 struct plus : binary_function<T, T, T> {
-    T operator()(const T& x, const T& y) const {
-        return x + y;
-    }
+  T operator()(const T& x, const T& y) const { return x + y; }
 };
 
 /**
@@ -60,9 +58,7 @@ struct plus : binary_function<T, T, T> {
  */
 template <typename T>
 struct minus : binary_function<T, T, T> {
-    T operator()(const T& x, const T& y) const {
-        return x - y;
-    }
+  T operator()(const T& x, const T& y) const { return x - y; }
 };
 
 /**
@@ -74,9 +70,7 @@ struct minus : binary_function<T, T, T> {
  */
 template <typename T>
 struct multiplies : binary_function<T, T, T> {
-    T operator()(const T& x, const T& y) const {
-        return x * y;
-    }
+  T operator()(const T& x, const T& y) const { return x * y; }
 };
 
 /**
@@ -88,9 +82,7 @@ struct multiplies : binary_function<T, T, T> {
  */
 template <typename T>
 struct divides : binary_function<T, T, T> {
-    T operator()(const T& x, const T& y) const {
-        return x / y;
-    }
+  T operator()(const T& x, const T& y) const { return x / y; }
 };
 
 /**
@@ -102,9 +94,7 @@ struct divides : binary_function<T, T, T> {
  */
 template <typename T>
 struct modulus : binary_function<T, T, T> {
-    T operator()(const T& x, const T& y) const {
-        return x % y;
-    }
+  T operator()(const T& x, const T& y) const { return x % y; }
 };
 
 /**
@@ -116,9 +106,7 @@ struct modulus : binary_function<T, T, T> {
  */
 template <typename T>
 struct negate : unarg_function<T, T> {
-    T operator()(const T& x) const {
-        return -x;
-    }
+  T operator()(const T& x) const { return -x; }
 };
 
 /**
@@ -130,9 +118,7 @@ struct negate : unarg_function<T, T> {
  */
 template <typename T>
 struct equal_to : binary_function<T, T, bool> {
-    bool operator()(const T& x, const T& y) const {
-        return x == y;
-    }
+  bool operator()(const T& x, const T& y) const { return x == y; }
 };
 
 /**
@@ -144,9 +130,7 @@ struct equal_to : binary_function<T, T, bool> {
  */
 template <typename T>
 struct not_equal_to : binary_function<T, T, bool> {
-    bool operator()(const T& x, const T& y) const {
-        return x != y;
-    }
+  bool operator()(const T& x, const T& y) const { return x != y; }
 };
 
 /**
@@ -158,9 +142,7 @@ struct not_equal_to : binary_function<T, T, bool> {
  */
 template <typename T>
 struct greater : binary_function<T, T, bool> {
-    bool operator()(const T& x, const T& y) const {
-        return x > y;
-    }
+  bool operator()(const T& x, const T& y) const { return x > y; }
 };
 
 /**
@@ -172,9 +154,7 @@ struct greater : binary_function<T, T, bool> {
  */
 template <typename T>
 struct less : binary_function<T, T, bool> {
-    bool operator()(const T& x, const T& y) const {
-        return x < y;
-    }
+  bool operator()(const T& x, const T& y) const { return x < y; }
 };
 
 /**
@@ -186,9 +166,7 @@ struct less : binary_function<T, T, bool> {
  */
 template <typename T>
 struct greater_equal : binary_function<T, T, bool> {
-    bool operator()(const T& x, const T& y) const {
-        return x >= y;
-    }
+  bool operator()(const T& x, const T& y) const { return x >= y; }
 };
 
 /**
@@ -200,9 +178,7 @@ struct greater_equal : binary_function<T, T, bool> {
  */
 template <typename T>
 struct less_equal : binary_function<T, T, bool> {
-    bool operator()(const T& x, const T& y) const {
-        return x <= y;
-    }
+  bool operator()(const T& x, const T& y) const { return x <= y; }
 };
 
 /**
@@ -214,9 +190,7 @@ struct less_equal : binary_function<T, T, bool> {
  */
 template <typename T>
 struct logical_and : binary_function<T, T, bool> {
-    bool operator()(const T& x, const T& y) const {
-        return x && y;
-    }
+  bool operator()(const T& x, const T& y) const { return x && y; }
 };
 
 /**
@@ -228,9 +202,7 @@ struct logical_and : binary_function<T, T, bool> {
  */
 template <typename T>
 struct logical_or : binary_function<T, T, bool> {
-    bool operator()(const T& x, const T& y) const {
-        return x || y;
-    }
+  bool operator()(const T& x, const T& y) const { return x || y; }
 };
 
 /**
@@ -242,9 +214,7 @@ struct logical_or : binary_function<T, T, bool> {
  */
 template <typename T>
 struct logical_not : unarg_function<T, bool> {
-    bool operator()(const T& x) const {
-        return !x;
-    }
+  bool operator()(const T& x) const { return !x; }
 };
 
 /**
@@ -256,7 +226,7 @@ struct logical_not : unarg_function<T, bool> {
  */
 template <typename T>
 T identity_element(plus<T>) {
-    return T(0);
+  return T(0);
 }
 
 /**
@@ -268,7 +238,7 @@ T identity_element(plus<T>) {
  */
 template <typename T>
 T identity_element(multiplies<T>) {
-    return T(1);
+  return T(1);
 }
 
 /**
@@ -280,9 +250,7 @@ T identity_element(multiplies<T>) {
  */
 template <typename T>
 struct identity : unarg_function<T, T> {
-    const T& operator()(const T& x) const {
-        return x;
-    }
+  const T& operator()(const T& x) const { return x; }
 };
 
 /**
@@ -292,9 +260,9 @@ struct identity : unarg_function<T, T> {
  */
 template <typename Pair>
 struct selectfirst : public unarg_function<Pair, typename Pair::first_type> {
-    const typename Pair::first_type& operator()(const Pair& x) const {
-        return x.first;
-    }
+  const typename Pair::first_type& operator()(const Pair& x) const {
+    return x.first;
+  }
 };
 
 /**
@@ -304,9 +272,9 @@ struct selectfirst : public unarg_function<Pair, typename Pair::first_type> {
  */
 template <typename Pair>
 struct selectsecond : unarg_function<Pair, typename Pair::second_type> {
-    const typename Pair::second_type& operator()(const Pair& x) const {
-        return x.second;
-    }
+  const typename Pair::second_type& operator()(const Pair& x) const {
+    return x.second;
+  }
 };
 
 /**
@@ -317,9 +285,7 @@ struct selectsecond : unarg_function<Pair, typename Pair::second_type> {
  */
 template <typename Arg1, typename Arg2>
 struct projectfirst : binary_function<Arg1, Arg2, Arg1> {
-    Arg1 operator()(const Arg1& x, const Arg2&) const {
-        return x;
-    }
+  Arg1 operator()(const Arg1& x, const Arg2&) const { return x; }
 };
 
 /**
@@ -330,9 +296,7 @@ struct projectfirst : binary_function<Arg1, Arg2, Arg1> {
  */
 template <typename Arg1, typename Arg2>
 struct projectsecond : binary_function<Arg1, Arg2, Arg2> {
-    Arg2 operator()(const Arg1&, const Arg2& y) const {
-        return y;
-    }
+  Arg2 operator()(const Arg1&, const Arg2& y) const { return y; }
 };
 
 /**
@@ -343,7 +307,7 @@ struct projectsecond : binary_function<Arg1, Arg2, Arg2> {
  * @tparam Key 哈希对象的类型。
  */
 template <typename Key>
-struct hash { };
+struct hash {};
 
 /**
  * @brief 针对指针类型的哈希函数特化。
@@ -352,9 +316,7 @@ struct hash { };
  */
 template <typename T>
 struct hash<T*> {
-    size_t operator()(T* p) const noexcept {
-        return reinterpret_cast<size_t>(p);
-    }
+  size_t operator()(T* p) const noexcept { return reinterpret_cast<size_t>(p); }
 };
 
 /**
@@ -362,11 +324,12 @@ struct hash<T*> {
  *
  * 定义一个宏 CCYSTL_TRIVIAL_HASH_FCN，用于快速定义整数类型的哈希函数。
  */
-#define CCYSTL_TRIVIAL_HASH_FCN(Type)                                          \
-  template <> struct hash<Type> {                                              \
-    size_t operator()(Type val) const noexcept {                               \
-      return static_cast<size_t>(val);                                         \
-    }                                                                          \
+#define CCYSTL_TRIVIAL_HASH_FCN(Type)            \
+  template <>                                    \
+  struct hash<Type> {                            \
+    size_t operator()(Type val) const noexcept { \
+      return static_cast<size_t>(val);           \
+    }                                            \
   };
 
 CCYSTL_TRIVIAL_HASH_FCN(bool)
@@ -412,18 +375,18 @@ CCYSTL_TRIVIAL_HASH_FCN(unsigned long long)
  */
 inline size_t bitwise_hash(const unsigned char* first, size_t count) {
 #if (_MSC_VER && _WIN64) || ((__GNUC__ || __clang__) && __SIZEOF_POINTER__ == 8)
-    constexpr size_t fnv_offset = 14695981039346656037ull;
-    constexpr size_t fnv_prime = 1099511628211ull;
+  constexpr size_t fnv_offset = 14695981039346656037ull;
+  constexpr size_t fnv_prime = 1099511628211ull;
 #else
-    constexpr size_t fnv_offset = 2166136261u;
-    constexpr size_t fnv_prime = 16777619u;
+  constexpr size_t fnv_offset = 2166136261u;
+  constexpr size_t fnv_prime = 16777619u;
 #endif
-    size_t result = fnv_offset;
-    for (size_t i = 0; i < count; ++i) {
-        result ^= static_cast<size_t>(first[i]);
-        result *= fnv_prime;
-    }
-    return result;
+  size_t result = fnv_offset;
+  for (size_t i = 0; i < count; ++i) {
+    result ^= static_cast<size_t>(first[i]);
+    result *= fnv_prime;
+  }
+  return result;
 }
 
 /**
@@ -431,9 +394,12 @@ inline size_t bitwise_hash(const unsigned char* first, size_t count) {
  */
 template <>
 struct hash<float> {
-    size_t operator()(const float& val) const {
-        return val == 0.0f ? 0 : bitwise_hash(reinterpret_cast<const unsigned char*>(&val), sizeof(float));
-    }
+  size_t operator()(const float& val) const {
+    return val == 0.0f
+               ? 0
+               : bitwise_hash(reinterpret_cast<const unsigned char*>(&val),
+                              sizeof(float));
+  }
 };
 
 /**
@@ -441,9 +407,12 @@ struct hash<float> {
  */
 template <>
 struct hash<double> {
-    size_t operator()(const double& val) const {
-        return val == 0.0 ? 0 : bitwise_hash(reinterpret_cast<const unsigned char*>(&val), sizeof(double));
-    }
+  size_t operator()(const double& val) const {
+    return val == 0.0
+               ? 0
+               : bitwise_hash(reinterpret_cast<const unsigned char*>(&val),
+                              sizeof(double));
+  }
 };
 
 /**
@@ -451,10 +420,13 @@ struct hash<double> {
  */
 template <>
 struct hash<long double> {
-    size_t operator()(const long double& val) const {
-        return val == 0.0L ? 0 : bitwise_hash(reinterpret_cast<const unsigned char*>(&val), sizeof(long double));
-    }
+  size_t operator()(const long double& val) const {
+    return val == 0.0L
+               ? 0
+               : bitwise_hash(reinterpret_cast<const unsigned char*>(&val),
+                              sizeof(long double));
+  }
 };
-} // namespace ccystl
+}  // namespace ccystl
 
-#endif // !CCYSTL_FUNCTIONAL_H_
+#endif  // !CCYSTL_FUNCTIONAL_H_
